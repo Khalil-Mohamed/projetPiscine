@@ -1,21 +1,25 @@
 <?php
-	// Define MySQL connection data
-	$MYSQL['host'] = "localhost";
-	$MYSQL['user'] = "admin";
-	$MYSQL['password'] = "snir2";
-	$MYSQL['database'] = "Piscine";
+	// information pour se connecter a la base de données
+	$MYSQL['host'] = "localhost"; 	// nom de l'hote 
+	$MYSQL['user'] = "admin"; 		// nom d'utilisateur
+	$MYSQL['password'] = "snir2"; 	// mot de psse
+	$MYSQL['database'] = "Piscine"; // nom base de données
 
-	// Connect to MySQL database
+	// Connection a la base de données
 	$mysqli = mysqli_connect($MYSQL['host'],$MYSQL['user'],$MYSQL['password'],$MYSQL['database']);
-
+	/*  Requete SQL qui selectionne les 5 dernieres id correspondant a la colonne pH
+		du tableau ValeursCapteurs */
 	$resultph = $mysqli->query("SELECT id, pH FROM ValeursCapteurs ORDER BY `id` DESC LIMIT 5");
 
-	// Loop through the result and populate an array
+	//declaration d'un tableau 
 	$valeursPH = Array();
+	// stockage des vleurs retourner par la requete dans le tableau
     while ($valeursPH[] = $resultph->fetch_assoc()){}
+	// efface la derniers valeurs null du tableau
     array_pop($valeursPH);
+	// inversion de l'ordre du tableau
 	$valeursPH = array_reverse($valeursPH);
-	// Return the result and close MySQL connection
+	// retour des resultat et deconnexion de la base de données
     $mysqli->close();
     header('Content-type: application/json');
 

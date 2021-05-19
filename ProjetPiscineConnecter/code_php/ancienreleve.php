@@ -1,19 +1,22 @@
 <?php
 include 'function.php';
+// connection a la bdd
 $pdo = pdo_connect_mysql();
-$requete = "SELECT * FROM ValeursCapteurs ORDER BY id LIMIT :current_page, :record_per_page";
+// Requete sql affichant le tableau ValeursCapteurs en fonction du nombre de mesures par pages
+$requete = "SELECT * FROM ValeursCapteurs ORDER BY id LIMIT :page_actuelle, :mesure_par_page";
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-// Number of records to show on each page
-$records_per_page = 10;
-// Prepare the SQL statement and get records from our contacts table, LIMIT will determine the page
+// Nombre de ligne par page
+$mesures_par_page = 10;
+// Preparation de la requete SQL et recuperation des mesures de notre table, config de LIMIT
 $stmt = $pdo->prepare($requete);
-$stmt->bindValue(':current_page', ($page - 1) * $records_per_page, PDO::PARAM_INT);
-$stmt->bindValue(':record_per_page', $records_per_page, PDO::PARAM_INT);
+$stmt->bindValue(':page_actuelle', ($page - 1) * $mesures_par_page, PDO::PARAM_INT);
+// attribution du nombre de mesures par pages
+$stmt->bindValue(':mesure_par_page', $mesures_par_page, PDO::PARAM_INT);
 $stmt->execute();
-// Fetch the records so we can display them in our template.
-$contacts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-// Get the total number of contacts, this is so we can determine whether there should be a next and previous button
-$num_contacts = $pdo->query('SELECT COUNT(*) FROM ValeursCapteurs')->fetchColumn();
+// recuperation des mesures pour les afficher dans notre page.
+$mesures = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// recuperation du nombre total de mesures, pour determiner l'affichage de bouton suivant ou précédent
+$num_mesures = $pdo->query('SELECT COUNT(*) FROM ValeursCapteurs')->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -31,24 +34,13 @@ $num_contacts = $pdo->query('SELECT COUNT(*) FROM ValeursCapteurs')->fetchColumn
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div id="header-wrapper">
-				<div id="header" class="container">
-					<div id="logo">
-						<<h1><a href="index.php">Votre Piscine</a></h1>
-					</div>
-					<div id="menu">
-						<ul>
-							<li><a href="index.php" title=>Accueil</a></li>
-							<li><a href="ancienreleve.php" accesskey="2" title="">Historique des relevés</a></li>
-							<li><a href="contact.php" accesskey="5" title="">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
+		<?=template_Navbar()?>
 			<div class="content read">
 				<div class="table-responsive">
 					<h2>Votre Historique</h2>
+					<!--tableau des valeurs-->
 					<table class="table">
+						<!--titre des colonnes-->
 						<thead>
 							<tr>
 								<td>#</td>
@@ -58,33 +50,36 @@ $num_contacts = $pdo->query('SELECT COUNT(*) FROM ValeursCapteurs')->fetchColumn
 								<td>Date</td>
 							</tr>
 						</thead>
+						<!--contenu du tableau-->
 						<tbody>
-							<?php foreach ($contacts as $contact) : ?>
+							<!--fonction qui remplit le tableau pour chaque mesures-->
+							<?php foreach ($mesures as $mesure) : ?>
 								<tr>
 									<td>
-										<?= $contact['id'] ?>
+										<?= $mesure['id'] ?>
 									</td>
 									<td>
-										<?= $contact['pH'] ?>
+										<?= $mesure['pH'] ?>
 									</td>
 									<td>
-										<?= $contact['Température'] ?>
+										<?= $mesure['Température'] ?>
 									</td>
 									<td>
-										<?= $contact['Turbidité'] ?>
+										<?= $mesure['Turbidité'] ?>
 									</td>
 									<td>
-										<?= $contact['Date'] ?>
+										<?= $mesure['Date'] ?>
 									</td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
 					</table>
+					<!--pagination des mesures-->
 					<div class="pagination">
 						<?php if ($page > 1) : ?>
 							<a href="ancienreleve.php?page=<?= $page - 1 ?>"><i class="fas fa-angle-double-left fa-sm"><?= $page  ?></i></a>
 						<?php endif; ?>
-						<?php if ($page * $records_per_page < $num_contacts) : ?>
+						<?php if ($page * $mesures_par_page < $num_mesures) : ?>
 							<a href="ancienreleve.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"><?= $page  ?></i></a>
 						<?php endif; ?>
 					</div>

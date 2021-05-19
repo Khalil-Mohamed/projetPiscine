@@ -5,50 +5,55 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!--script permettant le fonctionnement de anychart-->
 	<script src="https://cdn.anychart.com/releases/v8/js/anychart-base.min.js"></script>
 	<script src="https://cdn.anychart.com/releases/v8/js/anychart-data-adapter.min.js"></script>
 	<script src="https://cdn.anychart.com/releases/v8/js/anychart-exports.min.js"></script>
 	<script src="https://cdn.anychart.com/releases/v8/js/anychart-vml.min.js"></script>
 	<link rel="shortcut icon" type="image/jpg" href="images/pisine.jpg" />
+	<!--link permettant le fonctionnement de anychart-->
 	<link rel="stylesheet" href="https://cdn.anychart.com/releases/v8/css/anychart-ui.min.css" />
 	<link rel="stylesheet" href="https://cdn.anychart.com/releases/v8/fonts/css/anychart.min.css" />
+	<!--liaison avec le css "default.css"-->
 	<link href="/static/css/default.css" rel="stylesheet" type="text/css" media="all" />
+	<!--permet au site d'etre responsive-->
 	<link rel="stylesheet" href="/static/css/bootstrap.min.css" />
 	<title>Capteurs</title>
 </head>
 
 <body>
+	<!--class qui permet le responsive-->
 	<div class="container-fluid">
 		<div class="row">
-			<div id="header-wrapper">
-				<div id="header" class="container">
-					<div id="logo">
-						<h1><a href="index.php">Votre Piscine</a></h1>
-					</div>
-					<div id="menu">
-						<ul>
-							<li><a href="index.php" title=>Accueil</a></li>
-							<li><a href="ancienreleve.php" title=>Historique des relevés</a></li>
-							<li><a href="contact.php" accesskey="5" title="">Contact</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
+			<!--navbar responsive-->
+			<?php
+			include 'function.php';
+			template_Navbar()
+			?>
+			<!--diagramme PH-->
 			<div id="boxA">
 				<script>
-					anychart.data.loadJsonFile("/ValeurspH.php", function(data) { // init and draw chart
-						var chart = anychart.line(data);
+					// appel des données du fichier ValeurspH.php
+					anychart.data.loadJsonFile("/ValeurspH.php", function(data) {
+						// affichage des valeurs sous forme de diagramme en baton "column"
+						var chart = anychart.column(data);
+						// ordonnée y entre 0 et 14
 						chart.yScale().minimum(0);
+						chart.yScale().maximum(14);
+						// nom de l'abscisse
 						chart.xAxis().title('id');
+						// nom de l'ordonnée
 						chart.yAxis().title('pH');
+						// titre du diagramme
 						chart.title("dernieres valeurs du pH");
+						// container dans laquel sera dessiner le diagramme
 						chart.container("boxA");
+						// affichage du diagramme
 						chart.draw();
 
-						// update chart from server every 5 seconds
+						// mise a jour du diagramme toute les 5 secondes
 						setInterval(function() {
-							// make request to server
-							// to use loadJsonFile function you must include data-adapter.min.js to your page
+							// requete au serveur
 							anychart.data.loadJsonFile("/ValeurspH.php", function(data) {
 								chart.data(data);
 							})
@@ -56,10 +61,12 @@
 					});
 				</script>
 			</div>
+			<!--diagramme Température-->
 			<div id="boxA">
 				<script>
-					anychart.data.loadJsonFile("/ValeursTemp.php", function(data) { // init and draw chart
-						var chart = anychart.line(data);
+					// appel des données du fichier ValeurTemp.php
+					anychart.data.loadJsonFile("/ValeursTemp.php", function(data) {
+						var chart = anychart.column(data);
 						chart.yScale().minimum(0);
 						chart.xAxis().title('id');
 						chart.yAxis().title('Température');
@@ -67,10 +74,7 @@
 						chart.container("boxA");
 						chart.draw();
 
-						// update chart from server every 5 seconds
 						setInterval(function() {
-							// make request to server
-							// to use loadJsonFile function you must include data-adapter.min.js to your page
 							anychart.data.loadJsonFile("/ValeursTemp.php", function(data) {
 								chart.data(data);
 							})
@@ -78,9 +82,11 @@
 					});
 				</script>
 			</div>
+			<!--diagramme turbidité-->
 			<div id="boxA">
 				<script>
-					anychart.data.loadJsonFile("/ValeursTurb.php", function(data) { // init and draw chart
+					// appel des données du fichier ValeursTurb.php
+					anychart.data.loadJsonFile("/ValeursTurb.php", function(data) {
 						var chart = anychart.column(data);
 						chart.yScale().minimum(0);
 						chart.xAxis().title('id');
@@ -89,10 +95,7 @@
 						chart.container("boxA");
 						chart.draw();
 
-						// update chart from server every 5 seconds
 						setInterval(function() {
-							// make request to server
-							// to use loadJsonFile function you must include data-adapter.min.js to your page
 							anychart.data.loadJsonFile("/ValeursTurb.php", function(data) {
 								chart.data(data);
 							})
