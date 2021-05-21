@@ -77,10 +77,10 @@ $num_mesures = $pdo->query('SELECT COUNT(*) FROM ValeursCapteurs')->fetchColumn(
 					<!--pagination des mesures-->
 					<div class="pagination">
 						<?php if ($page > 1) : ?>
-							<a href="ancienreleve.php?page=<?= $page - 1 ?>"><i class="fas fa-angle-double-left fa-sm"><?= $page  ?></i></a>
+							<a href="ancienreleve.php?page=<?= $page - 1 ?>"><i class="fas fa-angle-double-left fa-sm"><?= $page - 1  ?></i></a>
 						<?php endif; ?>
 						<?php if ($page * $mesures_par_page < $num_mesures) : ?>
-							<a href="ancienreleve.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"><?= $page  ?></i></a>
+							<a href="ancienreleve.php?page=<?= $page + 1 ?>"><i class="fas fa-angle-double-right fa-sm"><?= $page + 1  ?></i></a>
 						<?php endif; ?>
 					</div>
 				</div>

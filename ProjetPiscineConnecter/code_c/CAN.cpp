@@ -3,6 +3,7 @@
 #include <sys/ioctl.h>
 #include <fcntl.h>
 #include <fstream>
+#include <unistd.h>
 using namespace std;
 
 int main()
@@ -11,7 +12,7 @@ int main()
 	int cable;
 	int DigitalpH, DigitalTemp, DigitalTurb;
 	float VoltpH, VoltTemp, VoltTurb, pH, Temp, NTU;
-	char *bus = "/dev/i2c-1";
+	const char *bus = "/dev/i2c-1";
 	if ((cable = open(bus, O_RDWR)) < 0) // test de la connexion I2C
 	{
 		printf("echec de connexion au bus.\n");
