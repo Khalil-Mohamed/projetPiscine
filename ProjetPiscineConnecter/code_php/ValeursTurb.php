@@ -8,12 +8,12 @@
 	// Connection a la base de données
 	$mysqli = mysqli_connect($MYSQL['host'],$MYSQL['user'],$MYSQL['password'],$MYSQL['database']);
 	/*  Requete SQL qui selectionne les 5 dernieres id correspondant a la colonne Turbidié
-		du tableau ValeursCapteurs */
-	$resultTurbidite = $mysqli->query("SELECT id, Turbidité FROM ValeursCapteurs ORDER BY `id` DESC LIMIT 5");
+		du tableau mesures */
+	$resultTurbidite = $mysqli->query("SELECT id, Turbidité FROM mesures ORDER BY `id` DESC LIMIT 5");
 
 	//declaration d'un tableau
 	$valeursTurbidite = Array();
-	// stockage des vleurs retourner par la requete dans le tableau
+	// stockage des valeurs retourner par la requete dans le tableau
     while ($valeursTurbidite[] = $resultTurbidite->fetch_assoc()){}
 	// efface la derniers valeurs null du tableau
     array_pop($valeursTurbidite);

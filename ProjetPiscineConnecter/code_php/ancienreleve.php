@@ -2,8 +2,8 @@
 include 'function.php';
 // connection a la bdd
 $pdo = pdo_connect_mysql();
-// Requete sql affichant le tableau ValeursCapteurs en fonction du nombre de mesures par pages
-$requete = "SELECT * FROM ValeursCapteurs ORDER BY id LIMIT :page_actuelle, :mesure_par_page";
+// Requete sql affichant le tableau mesures en fonction du nombre de mesures par pages
+$requete = "SELECT * FROM mesures ORDER BY id LIMIT :page_actuelle, :mesure_par_page";
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 // Nombre de ligne par page
 $mesures_par_page = 10;
@@ -16,7 +16,7 @@ $stmt->execute();
 // recuperation des mesures pour les afficher dans notre page.
 $mesures = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // recuperation du nombre total de mesures, pour determiner l'affichage de bouton suivant ou précédent
-$num_mesures = $pdo->query('SELECT COUNT(*) FROM ValeursCapteurs')->fetchColumn();
+$num_mesures = $pdo->query('SELECT COUNT(*) FROM mesures')->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
