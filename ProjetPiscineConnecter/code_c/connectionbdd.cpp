@@ -24,7 +24,7 @@ int main()
         double Temperature = ((double)rand()) / ((double)RAND_MAX) * 40.0 + 10.0; // affectation d'un valeur aleatoire de temperature
         double Turbidite = ((double)rand()) / ((double)RAND_MAX) * 500.0 + 10.0;
         ; // affectation d'un valeur aleatoire de turbitidé
-        RequeteSQL << "INSERT INTO ValeursCapteurs(pH, Température, Turbidité) VALUES(" << pH << "," << Temperature << "," << Turbidite << ")";
+        RequeteSQL << "INSERT INTO mesures(pH, Température, Turbidité) VALUES(" << pH << "," << Temperature << "," << Turbidite << ")";
         string query = RequeteSQL.str();
         const char *q = query.c_str();
         cout << q << endl; // message indiquant la requete au complet

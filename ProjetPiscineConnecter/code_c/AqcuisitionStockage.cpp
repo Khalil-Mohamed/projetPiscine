@@ -140,7 +140,7 @@ int main()
         cout << "connexion a la base de données reussi" << endl;
         stringstream RequeteSQL;
         srand(time(0));
-        RequeteSQL << "INSERT INTO ValeursCapteurs(pH, Température, Turbidité) VALUES(" << pH << "," << Temp << "," << NTU << ")";
+        RequeteSQL << "INSERT INTO mesures(pH, Température, Turbidité) VALUES(" << pH << "," << Temp << "," << NTU << ")";
         string query = RequeteSQL.str();
         const char *q = query.c_str();
         cout << q << endl; // message indiquant la requete au complet
